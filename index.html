@@ -28,11 +28,44 @@
           } 
         }
 
+
+      class FactRow {
+        required: string[];
+        options: string[];
+
+        constructor(required: string, options: string) {
+          this.required = required
+          this.options = options
+        }
+      }
+
+      class Topic {
+        name: string;
+        facts: FactRow[];
+
+        constructor(name: string, facts: FactRow[]) {
+          this.name = name
+          this.facts = facts
+        }
+      }
+
+      class TopicComponent extends React.Component {
+        render() {
+          <div class="topic-component">
+            <h1>{this.props.topic.name}</h1>
+            <h2>{this.props.topic.facts[0].required[0]}: {this.props.topic.facts[0].options[0]}</h2>
+          </div>
+        }
+      }
+
+      const example = new Topic("Test topic". [FactRow(["req1"], ["opt1"])]);
+      
       function App(){
         return(
-        <div>
-          <CustomComponent something="it works"/>
-        </div>
+          <div>
+            <CustomComponent something="it works"/>
+            <TopicComponent topic=example />
+          </div>
         )
       }
 

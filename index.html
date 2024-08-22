@@ -1,1 +1,47 @@
-index
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>English coach</title>
+    
+  <!-- Import the React, React-Dom and Babel libraries from unpkg -->
+    <script type="application/javascript" src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>
+    <script type="application/javascript" src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
+    <script type="application/javascript" src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+  
+    <script type="text/babel">
+      const rootElement = document.getElementById('root')
+
+      class CustomComponent extends React.Component { 
+        render() { 
+            return (
+              <div className="custom-component">Hello World. ({{this.props.something}})</div>
+            );
+          } 
+        }
+
+      function App(){
+        return(
+        <div>
+          <CustomComponent something="it works"/>
+        </div>
+        )
+      }
+
+      ReactDOM.render(
+        <App />,
+        rootElement
+      )
+    </script>
+  
+  </body>
+
+</html>

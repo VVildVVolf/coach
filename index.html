@@ -30,20 +30,14 @@
 
 
       class FactRow {
-        required: string[];
-        options: string[];
-
-        constructor(required: string, options: string) {
+        constructor(required, options) {
           this.required = required
           this.options = options
         }
       }
 
       class Topic {
-        name: string;
-        facts: FactRow[];
-
-        constructor(name: string, facts: FactRow[]) {
+        constructor(name, facts) {
           this.name = name
           this.facts = facts
         }

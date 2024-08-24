@@ -7,10 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>English coach</title>
+    <style>
+        ul {
+            list-style-type: none;
+        }
+    </style>
     
   <!-- Import the React, React-Dom and Babel libraries from unpkg -->
-    <script type="application/javascript" src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>
-    <script type="application/javascript" src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
+    <script type="application/javascript" src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+    <script type="application/javascript" src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
     <script type="application/javascript" src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
   </head>
 
@@ -18,55 +23,117 @@
     <div id="root"></div>
   
     <script type="text/babel">
-      const rootElement = document.getElementById('root')
+        const rootElement = document.getElementById('root')
 
-      class CustomComponent extends React.Component { 
-        render() { 
-            return (
-              <div className="custom-component">Hello World. ({this.props.something}) 2 </div>
-            );
-          } 
+        class CustomComponent extends React.Component { 
+            render() { 
+                return (
+                <div className="custom-component">Hello World. ({this.props.something}) 2 </div>
+                );
+            } 
         }
 
 
-      class FactRow {
-        constructor(required, options) {
-          this.required = required
-          this.options = options
+        class FactRow {
+            constructor(required, options) {
+            this.required = required
+            this.options = options
+            }
         }
-      }
 
-      class Topic {
-        constructor(name, facts) {
-          this.name = name
-          this.facts = facts
+        class Topic {
+            constructor(name, facts) {
+            this.name = name
+            this.facts = facts
+            }
         }
-      }
 
-      class TopicComponent extends React.Component {
-        render() {
-          <div class="topic-component">
-            <h1>{this.props.topic.name}</h1>
-            <h2>{this.props.topic.facts[0].required[0]}: {this.props.topic.facts[0].options[0]}</h2>
-          </div>
+        const data = [
+            new Topic("Test topic 1", [new FactRow(["req11"], ["opt11", "opt21", "opt31"])]),
+            new Topic("Test topic 2", [new FactRow(["req12"], ["opt12", "opt22", "opt32"])]),
+        ];
+
+        var activeTopics = new Set(data)
+
+        
+
+        // var currentTopic = Math.floor(Math.random() * activeTopics.size);
+
+        class TopicComponent extends React.Component {
+            constructor(props) {
+                super(props)
+
+                this.state = {
+                    currentTopic: Math.floor(Math.random() * activeTopics.size),
+                    allTopics: props.topics,
+                    activeTopics: new Set(props.topics)
+                }
+
+                this.onNext = this.onNext.bind(this);
+                this.onInputChange = this.onInputChange.bind(this);
+                this.onTopicSelected = this.onTopicSelected.bind(this);
+            }
+
+            onInputChange(e) {
+                console.log(e.target.value)
+            }
+
+            onTopicSelected(topic) {
+                var self = this
+                return function(e) {
+                    if (self.state.activeTopics.has(topic)) {
+                        self.state.activeTopics.delete(topic)
+                    } else {
+                        self.state.activeTopics.add(topic)
+                    }
+
+                    self.setState(self.state)
+                }
+            }
+
+            onNext() {
+                this.state.currentTopic = Math.floor(Math.random() * this.state.activeTopics.size)
+                this.setState(this.state)
+            }
+
+            render() {
+                var active = this.state.activeTopics
+                var list = [...active]
+
+                return <div class="topic-component">
+                    <h1>{list[this.state.currentTopic].name}</h1>
+
+                    {list[this.state.currentTopic].facts[0].required.map(x => <b> {x} </b>)}
+
+                    {list[this.state.currentTopic].facts[0].options.map(x => <i> {x} </i>)}
+
+                    <input name="answer" onChange={this.onInputChange}/>
+
+                    <hr />
+                    <button onClick={this.onNext}>
+                        Next
+                    </button>
+                
+                    <ul>
+                        {data.map(t => <li><input type="checkbox" label="topic" onChange={this.onTopicSelected(t)} defaultChecked={true}/> {t.name}</li>)}
+                    </ul>
+                </div>
+            }
         }
-      }
-
-      const example = new Topic("Test topic". [FactRow(["req1"], ["opt1"])]);
       
-      function App(){
-        return(
-          <div>
-            <CustomComponent something="it works"/>
-            <TopicComponent topic={example} />
-          </div>
-        )
-      }
+        function App(){
+            return(
+            <div>
+                <CustomComponent something="it works"/>
+                <TopicComponent topics={data} />
+            </div>
+            )
+        }
 
-      ReactDOM.render(
-        <App />,
-        rootElement
-      )
+        ReactDOM.render(
+            <App />,
+            rootElement
+        )
     </script>
   
   </body>

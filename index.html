@@ -305,6 +305,10 @@
                 this.onNextClick = this.onNextClick.bind(this);
                 this.onInputChange = this.onInputChange.bind(this);
                 this.onTopicSelected = this.onTopicSelected.bind(this);
+                this.onSelectAll = this.onSelectAll.bind(this);
+                this.onResetAll = this.onResetAll.bind(this);
+
+                console.log("flag")
             }
 
             onInputChange(desired) {
@@ -335,6 +339,24 @@
 
             onNextClick() {
                 this.goNext(false)
+            }
+
+            onSelectAll() {
+                this.state.allTopics.forEach(t => {
+                    this.state.activeTopics.add(t)
+                });
+
+                this.setState(this.state)
+            }
+
+            onResetAll() {
+                var fst = this.state.activeTopics.values().next().value
+                this.state.activeTopics = new Set()
+                this.state.activeTopics.add(fst)
+
+                this.state.currentTopic = 0
+
+                this.setState(this.state)
             }
 
             render() {
@@ -383,8 +405,12 @@
                         </svg>:{this.state.countFalse}
                     </div>
                 
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary" onClick={this.onSelectAll}>Select all</button>
+                        <button type="button" class="btn btn-primary" onClick={this.onResetAll}>Reset all</button>
+                    </div>
                     <ul class="list-group">
-                        {data.map(t => <li class="list-group-item"><input class="form-check-input" type="checkbox" id={t.name} onChange={this.onTopicSelected(t)} defaultChecked={this.state.activeTopics.has(t)}/><label class="form-check-label" for={t.name}>{t.name}</label></li>)}
+                        {data.map(t => <li class="list-group-item"><input class="form-check-input" type="checkbox" id={t.name} onChange={this.onTopicSelected(t)} defaultChecked={this.state.activeTopics.has(t)} checked={this.state.activeTopics.has(t)}/><label class="form-check-label" for={t.name}>{t.name}</label></li>)}
                     </ul>
                 </div>
             }

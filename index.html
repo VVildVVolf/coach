@@ -12,6 +12,9 @@
             list-style-type: none;
         }
     </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     
   <!-- Import the React, React-Dom and Babel libraries from unpkg -->
     <script type="application/javascript" src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
@@ -25,19 +28,11 @@
     <script type="text/babel">
         const rootElement = document.getElementById('root')
 
-        class CustomComponent extends React.Component { 
-            render() { 
-                return (
-                <div className="custom-component">Hello World. ({this.props.something}) 2 </div>
-                );
-            } 
-        }
-
-
         class FactRow {
-            constructor(required, options) {
-            this.required = required
-            this.options = options
+            constructor(required, options, ending) {
+                this.required = required
+                this.options = options
+                this.ending = ending
             }
         }
 
@@ -49,8 +44,12 @@
         }
 
         const data = [
-            new Topic("Test topic 1", [new FactRow(["req11"], ["opt11", "opt21", "opt31"])]),
-            new Topic("Test topic 2", [new FactRow(["req12"], ["opt12", "opt22", "opt32"])]),
+            new Topic("Test topic 1", [
+                new FactRow(["req11"], ["opt11", "opt21", "opt31"], "end 1"),
+            ]),
+            new Topic("Test topic 2", [
+                new FactRow(["req12"], ["opt12", "opt22", "opt32"], "end 2"),
+            ]),
         ];
 
         var activeTopics = new Set(data)
@@ -66,65 +65,114 @@
                 this.state = {
                     currentTopic: Math.floor(Math.random() * activeTopics.size),
                     allTopics: props.topics,
-                    activeTopics: new Set(props.topics)
+                    activeTopics: new Set(props.topics),
+                    countTrue: 0,
+                    countFalse: 0,
+                    previous: "",
                 }
 
-                this.onNext = this.onNext.bind(this);
+                this.onNextClick = this.onNextClick.bind(this);
                 this.onInputChange = this.onInputChange.bind(this);
                 this.onTopicSelected = this.onTopicSelected.bind(this);
             }
 
-            onInputChange(e) {
-                console.log(e.target.value)
+            onInputChange(desired) {
+                var self = this
+                return function(e){
+                    if (desired == e.target.value) {
+                        self.goNext(true)
+                    }
+                }
             }
 
             onTopicSelected(topic) {
                 var self = this
                 return function(e) {
+
                     if (self.state.activeTopics.has(topic)) {
+                        if (self.state.activeTopics.size == 1) return
                         self.state.activeTopics.delete(topic)
                     } else {
                         self.state.activeTopics.add(topic)
                     }
 
+                    self.state.currentTopic = Math.floor(Math.random() * self.state.activeTopics.size)
+
                     self.setState(self.state)
                 }
             }
 
-            onNext() {
-                this.state.currentTopic = Math.floor(Math.random() * this.state.activeTopics.size)
-                this.setState(this.state)
+            onNextClick() {
+                this.goNext(false)
             }
 
             render() {
-                var active = this.state.activeTopics
-                var list = [...active]
+                const active = this.state.activeTopics
+                const list = [...active]
 
-                return <div class="topic-component">
-                    <h1>{list[this.state.currentTopic].name}</h1>
+                const topic = list[this.state.currentTopic]
+                const fact = topic.facts[Math.floor(Math.random() * topic.facts.length)]
 
-                    {list[this.state.currentTopic].facts[0].required.map(x => <b> {x} </b>)}
+                const question = Math.floor(Math.random() * fact.options.length)
 
-                    {list[this.state.currentTopic].facts[0].options.map(x => <i> {x} </i>)}
+                const optionsDisplay = fact.options.map((x, i) => <i> { question != i ? x : <input name="answer" onChange={this.onInputChange(x)} autoFocus defaultValue=""/>} </i>)
 
-                    <input name="answer" onChange={this.onInputChange}/>
+                this.currentLine = `[${topic.name}] ${"".concat(...fact.required.map(x => " " + x))} ${"".concat(...fact.options.map(x => " " + x))} ${fact.ending}`
 
-                    <hr />
-                    <button onClick={this.onNext}>
+                return <div class="topic-component container">
+                    <div  class="mb-3">
+                        <h1>{topic.name}</h1>
+
+                        {fact.required.map(x => <b> {x} </b>)}
+
+                        {optionsDisplay}
+
+                        <b> {fact.ending} </b>
+                    </div>
+
+                    <div class="card text-bg-light mb-3">
+                        <div class="card-header">Previous</div>
+                        <div class="card-body">
+                            <p class="card-text">{this.state.previous}</p>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" onClick={this.onNextClick}>
                         Next
                     </button>
+
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                        </svg>:{this.state.countTrue}
+                        <i> </i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-slash-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708"/>
+                        </svg>:{this.state.countFalse}
+                    </div>
                 
-                    <ul>
-                        {data.map(t => <li><input type="checkbox" label="topic" onChange={this.onTopicSelected(t)} defaultChecked={true}/> {t.name}</li>)}
+                    <ul class="list-group">
+                        {data.map(t => <li class="list-group-item"><input class="form-check-input" type="checkbox" id={t.name} onChange={this.onTopicSelected(t)} defaultChecked={this.state.activeTopics.has(t)}/><label class="form-check-label" for={t.name}>{t.name}</label></li>)}
                     </ul>
                 </div>
+            }
+
+            goNext(isCorrect) {
+                this.state.currentTopic = Math.floor(Math.random() * this.state.activeTopics.size)
+                this.state.previous = this.currentLine
+                if (isCorrect) {
+                    this.state.countTrue ++
+                } else {
+                    this.state.countFalse ++
+                }
+                this.setState(this.state)
             }
         }
       
         function App(){
             return(
             <div>
-                <CustomComponent something="it works"/>
                 <TopicComponent topics={data} />
             </div>
             )
@@ -135,7 +183,7 @@
             rootElement
         )
     </script>
-  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
   </body>
 
 </html>

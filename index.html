@@ -312,7 +312,7 @@
 
                 const question = Math.floor(Math.random() * fact.options.length)
 
-                const optionsDisplay = fact.options.map((x, i) => <i> { question != i ? x : <input name="answer" onChange={this.onInputChange(x)} autoFocus defaultValue=""/>} </i>)
+                const optionsDisplay = fact.options.map((x, i) => <i> { question != i ? x : <input name="answer" onChange={this.onInputChange(x)} autoFocus defaultValue="" ref={el => this.mainInput = el}/>} </i>)
 
                 this.currentLine = `[${topic.name}] ${"".concat(...fact.required.map(x => " " + x))} ${"".concat(...fact.options.map(x => " " + x))} ${fact.ending}`
 
@@ -356,6 +356,8 @@
             }
 
             goNext(isCorrect) {
+                this.mainInput.value = "";
+
                 this.state.currentTopic = Math.floor(Math.random() * this.state.activeTopics.size)
                 this.state.previous = this.currentLine
                 if (isCorrect) {

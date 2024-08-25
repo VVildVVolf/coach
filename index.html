@@ -310,7 +310,7 @@
             onInputChange(desired) {
                 var self = this
                 return function(e){
-                    if (desired == e.target.value) {
+                    if (desired == e.target.value.trim()) {
                         self.goNext(true)
                     }
                 }

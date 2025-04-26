@@ -283,8 +283,8 @@
             ]),
         ];
 
-        const phrasualVerbs = [
-            new Topic("Phrasual verbs pt1", [
+        const pharasalVerbs = [
+            new Topic("Pharasal verbs pt1", [
                 new FactRow(["Brian (invite Judy on a date)"], ["asked Judy out"], "to dinner and a movie."),
                 new FactRow(["I (asked many people the same question)"], ["asked around"], "but nobody has seen my wallet."),
                 new FactRow(["Your purchases (equal)"], ["add up"], "to $205.32."),
@@ -296,7 +296,7 @@
                 new FactRow(["The woman (got upset)"], ["broke down"], "when the police told her that her son had lost his wallet."),
                 new FactRow(["Our teacher (divided the final project into smaller parts)"], ["broke the final project down"], "into three separate parts."),
             ]),
-            new Topic("Phrasual verbs pt2", [
+            new Topic("Pharasal verbs pt2", [
                 new FactRow(["Somebody (forced entry to a building)"], ["broke in"], "last night and stole our stereo."),
                 new FactRow(["The firemen had to (enter forcibly the room)"], ["break into the room"], "to rescue the children."),
                 new FactRow(["I need to (wear these shoes a few times so that it doesn't look/feel new)"], ["break these shoes in"], "before we run next week."),
@@ -310,7 +310,7 @@
                 new FactRow(["My mother walks out of the room when my father (starts talking about a subject - sports)"], ["brings up sports"], "."),
                 new FactRow(["He drank so much that he (vomited his dinner)"], ["brought his dinner up"], "in the toilet."),
             ]),
-            new Topic("Phrasual verbs pt3", [
+            new Topic("Pharasal verbs pt3", [
                 new FactRow(["We (phoned many different places / people)"], ["called around"], "but we weren&#39;t able to find the car part we needed."),
                 new FactRow(["I (returned a phone call - to company)"], ["called the company back"], "but the offices were closed for the weekend."),
                 new FactRow(["Jason (canceled the wedding)"], ["called the wedding off"], "because he wasn&#39;t in love with his fiancé."),
@@ -325,7 +325,7 @@
                 new FactRow(["The company (look at carefully, investigate)"], ["checks out"], "all new employees."),
                 new FactRow(["(look at (informal))"], ["Check out", "check out"], "the crazy hair on that guy!"),
             ]),
-            new Topic("Phrasual verbs pt4", [
+            new Topic("Pharasal verbs pt4", [
                 new FactRow(["She (became happier)"], ["cheered up"], "when she heard the good news."),
                 new FactRow(["If everyone (helps)"], ["chips in"], "we can get the kitchen painted by noon."),
                 new FactRow(["Please (tidy, clean your bedroom)"], ["clean up your bedroom"], "before you go outside."),
@@ -337,7 +337,7 @@
                 new FactRow(["I am (rely on you)"], ["counting on you"], "to make dinner while I am out."),
                 new FactRow(["Please (draw a line through)"], ["cross out"], "your old address and write your new one."),
             ]),
-            new Topic("Phrasual verbs pt5", [
+            new Topic("Pharasal verbs pt5", [
                 new FactRow(["My doctor wants me to (consume less)"], ["cut back on"], "sweets and fatty foods."),
                 new FactRow(["We had to (make the tree fall to the ground)"], ["cut the tree down"], "after the storm."),
                 new FactRow(["Your father (interrupt)"], ["cut in"], "while I was dancing with your uncle."),
@@ -360,7 +360,7 @@
 
         var topics = new Map();
         topics.set("#gerunds_and_invenitives", gerundsAndInfinitives);
-        topics.set("#phrasual_verbs", phrasualVerbs);
+        topics.set("#pharasal_verbs", pharasalVerbs);
         window.addEventListener('hashchange', () => window.location.reload());
 
         if (topics.has(window.location.hash)) {

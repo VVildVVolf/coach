@@ -38,12 +38,12 @@
 
         class Topic {
             constructor(name, facts) {
-            this.name = name
-            this.facts = facts
+                this.name = name
+                this.facts = facts
             }
         }
 
-        const data = [
+        const gerundsAndInfinitives = [
             new Topic("GERUNDS AND INFINITIVES pt1", [
                 new FactRow(["I (prefer|learn) '"], ["prefer to learn"], "English"),
                 new FactRow(["I (prepare|learn)"], ["prepare for learning"], "English"),
@@ -283,9 +283,77 @@
             ]),
         ];
 
+        const phrasualVerbs = [
+            new Topic("Phrasual werbs pt1", [
+                new FactRow(["Brian (invite Judy on a date)"], ["asked Judy out"], "to dinner and a movie."),
+                new FactRow(["I (asked many people the same question)"], ["asked around"], "but nobody has seen my wallet."),
+                new FactRow(["Your purchases (equal)"], ["add up"], "to $205.32."),
+                new FactRow(["You'll have to (reverse your car)"], ["back up your car"], "so that I can get out."),
+                new FactRow(["My wife (supported me)"], ["backed me up"], "over my decision to quit my job."),
+                new FactRow(["The racing car (exploided)"], ["blew up"], "after it crashed into the fence."),
+                new FactRow(["We have to (add air to 50 balloons)"], ["blow 50 balloons up"], "for the party."),
+                new FactRow(["Our car (stopped functioning)"], ["broke down"], "at the side of the highway in the snowstorm."),
+                new FactRow(["The woman (got upset)"], ["broke down"], "when the police told her that her son had lost his wallet."),
+                new FactRow(["Our teacher (divided the final project into smaller parts)"], ["broke the final project down"], "into three separate parts."),
+            ]),
+            new Topic("Phrasual werbs pt2", [
+                new FactRow(["Somebody (forced entry to a building)"], ["broke in"], "last night and stole our stereo."),
+                new FactRow(["The firemen had to (enter forcibly the room)"], ["break into the room"], "to rescue the children."),
+                new FactRow(["I need to (wear these shoes a few times so that it doesn't look/feel new)"], ["break these shoes in"], "before we run next week."),
+                new FactRow(["The TV station (interrupted)"], ["broke in"], "to report the news of the president's death."),
+                new FactRow(["My boyfriend and I (ended a relationship)"], ["broke up"], "before I moved to America."),
+                new FactRow(["The kids just (started laughing (informal))"], ["broke up"], "as soon as the clown started talking."),
+                new FactRow(["The prisoners (escaped)"], ["broke out"], "of jail when the guards weren't looking."),
+                new FactRow(["I (develop a skin condition - a rush)"], ["broke out in a rash"], "after our camping trip."),
+                new FactRow(["This sad music is (making me unhappy)"], ["bringing me down"], "."),
+                new FactRow(["My grandparents (raise a child - me)"], ["brought me up"], "summer holidays"),
+                new FactRow(["My mother walks out of the room when my father (starts talking about a subject - sports)"], ["brings up sports"], "."),
+                new FactRow(["He drank so much that he (vomited his dinner)"], ["brought his dinner up"], "in the toilet."),
+            ]),
+            new Topic("Phrasual werbs pt3", [
+                new FactRow(["We (phoned many different places / people)"], ["called around"], "but we weren&#39;t able to find the car part we needed."),
+                new FactRow(["I (returned a phone call - to company)"], ["called the company back"], "but the offices were closed for the weekend."),
+                new FactRow(["Jason (canceled the wedding)"], ["called the wedding off"], "because he wasn&#39;t in love with his fiancé."),
+                new FactRow(["The professor (asked me for an answer or opinion)"], ["called on me"], "for question 1."),
+                new FactRow(["We (visited you)"], ["called on you"], "last night but you weren&#39;t home."),
+                new FactRow(["Give me your phone number and I will (phone you)"], ["call you up"], "when we are in town."),
+                new FactRow(["You are still mad. You need to (relax after being angry)"], ["calm down"], "before you drive the car."),
+                new FactRow(["I (not like (formal) his behaviour)"], ["do not care for his behaviour", "don't care for his behaviour"], "."),
+                new FactRow(["You&#39;ll have to run faster than that if you want to (get to the same point)"], ["catch up"], "with Marty."),
+                new FactRow(["We will get the hotel keys when we (arrive and register at a hotel or airport)"], ["check in"], "."),
+                new FactRow(["You have to (leave the hotel)"], ["check out of the hotel"], "before 11:00 AM."),
+                new FactRow(["The company (look at carefully, investigate)"], ["checks out"], "all new employees."),
+                new FactRow(["(look at (informal))"], ["Check out", "check out"], "the crazy hair on that guy!"),
+            ]),
+            new Topic("Phrasual werbs pt4", [
+                new FactRow(["She (became happier)"], ["cheered up"], "when she heard the good news."),
+                new FactRow(["If everyone (helps)"], ["chips in"], "we can get the kitchen painted by noon."),
+                new FactRow(["Please (tidy, clean your bedroom)"], ["clean up your bedroom"], "before you go outside."),
+                new FactRow(["I (found unexpectedly these old photos)"], ["came across these old photos"], "when I was tidying the closet."),
+                new FactRow(["The top and bottom (separate)"], ["come apart"], "if you pull hard enough."),
+                new FactRow(["My nephew (became sick - chicken pox)"], ["came down with chicken pox"], "this weekend."),
+                new FactRow(["The woman (volunteered for a task or to give evidence)"], ["came forward"], "with her husband's finger prints."),
+                new FactRow(["The art of origami (originates in)"], ["comes from"], "Asia."),
+                new FactRow(["I am (rely on you)"], ["counting on you"], "to make dinner while I am out."),
+                new FactRow(["Please (draw a line through)"], ["cross out"], "your old address and write your new one."),
+
+                // new FactRow(["four"], ["five"], "six"),
+            ]),
+        ];
+
+        var data = gerundsAndInfinitives
+
+        var topics = new Map();
+        topics.set("#gerunds_and_invenitives", gerundsAndInfinitives);
+        topics.set("#phrasual_verbs", phrasualVerbs);
+        window.addEventListener('hashchange', () => window.location.reload());
+
+        if (topics.has(window.location.hash)) {
+            data = topics.get(window.location.hash);
+        }
+
         var activeTopics = new Set(data)
 
-        
 
         // var currentTopic = Math.floor(Math.random() * activeTopics.size);
 
@@ -405,6 +473,19 @@
                         </svg>:{this.state.countFalse}
                     </div>
                 
+                    <div class="card text-bg-light mb-3">
+                        <div class="card-body">
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
+                            Choose topics
+                            </button>
+                            <div class="collapse show" id="home-collapse">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    {topics.keys().map(x => <li><a href={x} class="link-dark d-inline-flex text-decoration-none rounded">{x}</a></li>)}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-primary" onClick={this.onSelectAll}>Select all</button>
                         <button type="button" class="btn btn-primary" onClick={this.onResetAll}>Reset all</button>
@@ -443,6 +524,7 @@
         )
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <!-- <script src="https://getbootstrap.com/docs/5.2/examples/sidebars/sidebars.js"></script> -->
   </body>
 
 </html>
